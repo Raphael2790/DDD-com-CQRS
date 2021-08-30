@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-RssStore.WebApp.MVC-455E39AB-4DD3-4819-A21F-4122E79B6E5C</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.17" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RssStore.Catalog.Application\RssStore.Catalog.Application.csproj" />
+    <ProjectReference Include="..\RssStore.Catalog.Data\RssStore.Catalog.Data.csproj" />
+    <ProjectReference Include="..\RssStore.Catalog.Domain\RssStore.Catalog.Domain.csproj" />
+    <ProjectReference Include="..\RssStore.Core\RssStore.Core.csproj" />
+    <ProjectReference Include="..\RssStore.Sales.Application\RssStore.Sales.Application.csproj" />
+    <ProjectReference Include="..\RssStore.Sales.Data\RssStore.Sales.Data.csproj" />
+  </ItemGroup>
+
+</Project>
