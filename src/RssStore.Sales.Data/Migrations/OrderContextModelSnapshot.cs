@@ -8,7 +8,7 @@ using RssStore.Sales.Data;
 
 namespace RssStore.Sales.Data.Migrations
 {
-    [DbContext(typeof(OrderContext))]
+    [DbContext(typeof(SalesContext))]
     partial class OrderContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

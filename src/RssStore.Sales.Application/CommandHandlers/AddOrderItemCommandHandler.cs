@@ -3,6 +3,7 @@ using RssStore.Core.Communication.Mediator;
 using RssStore.Core.DomainObjects.Messages;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
 using RssStore.Sales.Application.Commands;
+using RssStore.Sales.Application.Events;
 using RssStore.Sales.Domain.Entities;
 using RssStore.Sales.Domain.Interfaces;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace RssStore.Sales.Application.CommandHandlers
                 order.AddItem(orderItem);
 
                 _orderRepository.AddOrder(order);
+                order.AddEvents(new DraftOrderInitializedEvent(message.ClientId, message.AggregateId));
             }
             else
             {
@@ -48,7 +50,11 @@ namespace RssStore.Sales.Application.CommandHandlers
                 {
                     _orderRepository.AddOrderItem(orderItem);
                 }
+
+                order.AddEvents(new UpdatedOrderEvent(message.ClientId, order.Id, order.TotalValue));
             }
+
+            order.AddEvents(new OrderItemAddedEvent(message.ClientId, order.Id, message.ProductId, message.UnitValue, message.Amount, message.ProductName));
 
             return await _orderRepository.UnitOfWork.Commit();
         }

@@ -9,7 +9,7 @@ using RssStore.Sales.Data;
 
 namespace RssStore.Sales.Data.Migrations
 {
-    [DbContext(typeof(OrderContext))]
+    [DbContext(typeof(SalesContext))]
     [Migration("20210830095515_InitialSales")]
     partial class InitialSales
     {

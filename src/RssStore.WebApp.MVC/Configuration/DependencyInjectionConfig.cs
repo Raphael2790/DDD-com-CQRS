@@ -12,6 +12,8 @@ using RssStore.Core.Communication.Mediator;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
 using RssStore.Sales.Application.CommandHandlers;
 using RssStore.Sales.Application.Commands;
+using RssStore.Sales.Application.EventHandlers;
+using RssStore.Sales.Application.Events;
 using RssStore.Sales.Data;
 using RssStore.Sales.Data.Repository;
 using RssStore.Sales.Domain.Interfaces;
@@ -45,9 +47,13 @@ namespace RssStore.WebApp.MVC.Configuration
             //MediatR irá resolver o comando usando o handler
             services.AddScoped<IRequestHandler<AddOrderItemCommand, bool>, AddOrderItemCommandHandler>();
             //Context
-            services.AddScoped<OrderContext>();
+            services.AddScoped<SalesContext>();
             //Repository
             services.AddScoped<IOrderRepository, OrderRepository>();
+            //EventsHandler
+            services.AddScoped<INotificationHandler<DraftOrderInitializedEvent>, OrderItemEventHandler>();
+            services.AddScoped<INotificationHandler<OrderItemAddedEvent>, OrderItemEventHandler>();
+            services.AddScoped<INotificationHandler<UpdatedOrderEvent>, OrderItemEventHandler>();
         }
 
 

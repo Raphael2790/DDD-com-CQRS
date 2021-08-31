@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RssStore.Core.Communication.Mediator;
 using RssStore.Core.DomainObjects.Messages;
+using RssStore.Sales.Data.Extensions;
 using RssStore.Sales.Domain.Entities;
 using System;
 using System.Linq;
@@ -7,9 +9,13 @@ using System.Threading.Tasks;
 
 namespace RssStore.Sales.Data
 {
-    public class OrderContext : DbContext
+    public class SalesContext : DbContext
     {
-        public OrderContext(DbContextOptions<OrderContext> options) : base(options){}
+        private readonly IMediatorHandler _mediatorHandler;
+        public SalesContext(DbContextOptions<SalesContext> options, IMediatorHandler mediatorHandler) : base(options)
+        {
+            _mediatorHandler = mediatorHandler;
+        }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
@@ -24,7 +30,7 @@ namespace RssStore.Sales.Data
 
             modelBuilder.HasSequence<int>("MySequence").StartsAt(1000).IncrementsBy(1);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SalesContext).Assembly);
         }
 
         public async Task<bool> Commit()
@@ -38,7 +44,12 @@ namespace RssStore.Sales.Data
                     entry.Property("RegisterDate").IsModified = false;
             }
 
-            return await base.SaveChangesAsync() > 0;
+            //Pegando todos os eventos de mudanças dentro das entidades pelo change tracker
+            await _mediatorHandler.PublishEvents(this);
+
+            var sucess = await base.SaveChangesAsync() > 0;
+
+            return sucess;
         }
     }
 }

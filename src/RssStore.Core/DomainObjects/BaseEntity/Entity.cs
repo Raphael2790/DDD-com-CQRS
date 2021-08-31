@@ -1,15 +1,37 @@
-﻿using System;
+﻿using RssStore.Core.DomainObjects.Messages;
+using System;
+using System.Collections.Generic;
 
 namespace RssStore.Core.BaseEntity.DomainObjects
 {
     public abstract class Entity
     {
+        private List<Event> _notificationEvents;
+
+        public IReadOnlyCollection<Event> NoticationEvents => _notificationEvents?.AsReadOnly();
+
         protected Entity()
         {
             Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; }
+
+        public void AddEvents(Event eventItem)
+        {
+            _notificationEvents = _notificationEvents ?? new List<Event>();
+            _notificationEvents.Add(eventItem);
+        }
+
+        public void RemoveEvent(Event eventItem)
+        {
+            _notificationEvents?.Remove(eventItem);
+        }
+
+        public void ClearEvents()
+        {
+            _notificationEvents?.Clear();
+        }
 
         public override bool Equals(object obj)
         {

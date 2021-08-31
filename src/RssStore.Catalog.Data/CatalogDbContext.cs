@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RssStore.Catalog.Domain.Entities;
 using RssStore.Core.Data;
+using RssStore.Core.DomainObjects.Messages;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace RssStore.Catalog.Data
         {
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(100)");
+
+            modelBuilder.Ignore<Event>();
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogDbContext).Assembly);
         }

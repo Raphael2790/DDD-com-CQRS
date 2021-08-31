@@ -12,8 +12,8 @@ namespace RssStore.Sales.Data.Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly OrderContext _context;
-        public OrderRepository(OrderContext context)
+        private readonly SalesContext _context;
+        public OrderRepository(SalesContext context)
         {
             _context = context;
         }

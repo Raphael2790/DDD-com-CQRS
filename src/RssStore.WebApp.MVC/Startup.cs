@@ -40,7 +40,7 @@ namespace RssStore.WebApp.MVC
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<OrderContext>(options =>
+            services.AddDbContext<SalesContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
 
