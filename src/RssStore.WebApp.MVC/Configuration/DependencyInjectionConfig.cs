@@ -14,6 +14,8 @@ using RssStore.Sales.Application.CommandHandlers;
 using RssStore.Sales.Application.Commands;
 using RssStore.Sales.Application.EventHandlers;
 using RssStore.Sales.Application.Events;
+using RssStore.Sales.Application.Queries;
+using RssStore.Sales.Application.Queries.Interfaces;
 using RssStore.Sales.Data;
 using RssStore.Sales.Data.Repository;
 using RssStore.Sales.Domain.Interfaces;
@@ -50,6 +52,7 @@ namespace RssStore.WebApp.MVC.Configuration
             services.AddScoped<SalesContext>();
             //Repository
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderQueries, OrderQueries>();
             //EventsHandler
             services.AddScoped<INotificationHandler<DraftOrderInitializedEvent>, OrderItemEventHandler>();
             services.AddScoped<INotificationHandler<OrderItemAddedEvent>, OrderItemEventHandler>();

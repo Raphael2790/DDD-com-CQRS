@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Catalog.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.WebApp.MVC", "src\RssStore.WebApp.MVC\RssStore.WebApp.MVC.csproj", "{FE34B4D2-6C0E-4F59-969E-05C8C3BE0E1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Sales.Domain", "src\RssStore.Sales.Domain\RssStore.Sales.Domain.csproj", "{64F887E2-BF21-43DD-835E-E158E761658C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Sales.Domain", "src\RssStore.Sales.Domain\RssStore.Sales.Domain.csproj", "{64F887E2-BF21-43DD-835E-E158E761658C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Sales.Application", "src\RssStore.Sales.Application\RssStore.Sales.Application.csproj", "{B240A466-A3CB-45C9-B71B-F893011FFED5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Sales.Application", "src\RssStore.Sales.Application\RssStore.Sales.Application.csproj", "{B240A466-A3CB-45C9-B71B-F893011FFED5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Sales.Data", "src\RssStore.Sales.Data\RssStore.Sales.Data.csproj", "{AB3CFD0A-50C8-4A6E-8CA3-6BF40E4F7B82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Sales.Data", "src\RssStore.Sales.Data\RssStore.Sales.Data.csproj", "{AB3CFD0A-50C8-4A6E-8CA3-6BF40E4F7B82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

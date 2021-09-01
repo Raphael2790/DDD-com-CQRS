@@ -7,6 +7,7 @@ using RssStore.WebApp.MVC.Controllers.Base;
 using RssStore.Core.Communication.Mediator;
 using MediatR;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
+using RssStore.Sales.Application.Queries.Interfaces;
 
 namespace RssStore.WebApp.MVC.Controllers
 {
@@ -14,17 +15,20 @@ namespace RssStore.WebApp.MVC.Controllers
     {
         private readonly IProductAppService _productAppService;
         private readonly IMediatorHandler _mediatorHandler;
-        public ShoppingCartController(INotificationHandler<DomainNotification> notifications, 
-                                      IProductAppService productAppService, 
-                                      IMediatorHandler mediatorHandler) : base(notifications, mediatorHandler)
+        private readonly IOrderQueries _orderQueries;
+        public ShoppingCartController(INotificationHandler<DomainNotification> notifications,
+                                      IProductAppService productAppService,
+                                      IMediatorHandler mediatorHandler, IOrderQueries orderQueries) : base(notifications, mediatorHandler)
         {
             _productAppService = productAppService;
             _mediatorHandler = mediatorHandler;
+            _orderQueries = orderQueries;
         }
 
-        public IActionResult Index()
+        [HttpGet("meu-carrinho")]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _orderQueries.GetClientOrders(ClientId));
         }
 
         [HttpPost("meu-carrinho")]
@@ -50,5 +54,57 @@ namespace RssStore.WebApp.MVC.Controllers
             TempData["Erros"] = GetErrorsMessages();
             return RedirectToAction("CatalogDetail", nameof(CatalogController), new { id });
         }
+
+        //[HttpPost("remover-item")]
+        //public async Task<IActionResult> RemoveItem(Guid productId)
+        //{
+        //    var product = await _productAppService.GetById(productId);
+
+        //    if (product is null) return BadRequest();
+
+        //    var command = new RemoveOrderItemCommand(ClientId, productId);
+
+        //    await _mediatorHandler.SendCommand(command);
+
+        //    if (ValidOperation())
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return View(nameof(Index), await _orderQueries.GetClientCart(ClientId));
+        //}
+
+        //[HttpPost("atualizar-item")]
+        //public async Task<IActionResult> UpdateItem(Guid productId, int amount)
+        //{
+        //    var product = await _productAppService.GetById(productId);
+
+        //    if (product is null) return BadRequest();
+
+        //    var command = new UpdateOrderItemCommand(ClientId, productId, amount);
+
+        //    _mediatorHandler.SendCommand(command);
+
+        //    if (ValidOperation())
+        //    {
+        //        RedirectToAction(nameof(Index));
+        //    }
+
+        //    return View(nameof(Index), await _orderQueries.GetClientCart(ClientId));
+        //}
+
+        //[HttpPost("aplicar-voucher")]
+        //public async Task<IActionResult> ApplyVoucher(string voucherCode)
+        //{
+        //    var command = new ApplyVoucherOrderCommand(ClientId, voucherCode);
+        //    await _mediatorHandler.SendCommand(command);
+
+        //    if (ValidOperation())
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return View(nameof(Index), await _orderQueries.GetClientCart(ClientId));
+        //}
     }
 }
