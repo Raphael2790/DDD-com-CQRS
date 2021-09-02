@@ -1,4 +1,6 @@
-﻿using RssStore.Core.BaseEntity.DomainObjects;
+﻿using FluentValidation.Results;
+using RssStore.Core.BaseEntity.DomainObjects;
+using RssStore.Sales.Domain.EntityValidations;
 using RssStore.Sales.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -20,5 +22,10 @@ namespace RssStore.Sales.Domain.Entities
 
         //EF Relations
         public virtual ICollection<Order> Orders { get; set; }
+
+        public ValidationResult IsValidToApply()
+        {
+            return new ApplyableVoucherValidation().Validate(this);
+        }
     }
 }

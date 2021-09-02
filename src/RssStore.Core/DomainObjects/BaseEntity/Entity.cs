@@ -17,7 +17,7 @@ namespace RssStore.Core.BaseEntity.DomainObjects
 
         public Guid Id { get; set; }
 
-        public void AddEvents(Event eventItem)
+        public void AddEvent(Event eventItem)
         {
             _notificationEvents = _notificationEvents ?? new List<Event>();
             _notificationEvents.Add(eventItem);

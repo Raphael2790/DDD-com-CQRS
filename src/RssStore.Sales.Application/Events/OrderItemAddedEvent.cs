@@ -3,6 +3,7 @@ using System;
 
 namespace RssStore.Sales.Application.Events
 {
+    //Eventos sempre devem conter o id da agregação para identicar a raiz de agregação
     public class OrderItemAddedEvent : Event
     {
         public OrderItemAddedEvent(Guid clientId, Guid orderId, Guid productId, decimal unitValue, int amount, string productName)

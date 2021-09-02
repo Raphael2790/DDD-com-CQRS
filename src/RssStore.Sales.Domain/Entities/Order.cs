@@ -1,4 +1,5 @@
-﻿using RssStore.Core.BaseEntity.DomainObjects;
+﻿using FluentValidation.Results;
+using RssStore.Core.BaseEntity.DomainObjects;
 using RssStore.Core.DomainObjects;
 using RssStore.Core.Interfaces.DomainObjects;
 using RssStore.Sales.Domain.Enums;
@@ -39,11 +40,15 @@ namespace RssStore.Sales.Domain.Entities
             _orderItems = new List<OrderItem>();
         }
 
-        public void ApplyVoucher(Voucher voucher)
+        public ValidationResult ApplyVoucher(Voucher voucher)
         {
+            var validationResult = voucher.IsValidToApply();
+            if (!validationResult.IsValid) return validationResult;
+
             Voucher = voucher;
             VoucherApplyed = true;
             CalculateTotalOrder();
+            return validationResult;
         }
 
         public void CalculateTotalOrder()

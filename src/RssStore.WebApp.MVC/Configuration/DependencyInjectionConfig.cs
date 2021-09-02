@@ -47,7 +47,11 @@ namespace RssStore.WebApp.MVC.Configuration
 
             //Sales
             //MediatR irá resolver o comando usando o handler
-            services.AddScoped<IRequestHandler<AddOrderItemCommand, bool>, AddOrderItemCommandHandler>();
+            services.AddScoped<IRequestHandler<AddOrderItemCommand, bool>, OrderItemCommandHandler>();
+            services.AddScoped<IRequestHandler<ApplyVoucherOrderCommand, bool>, OrderItemCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveOrderItemCommand, bool>, OrderItemCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateOrderItemCommand, bool>, OrderItemCommandHandler>();
+
             //Context
             services.AddScoped<SalesContext>();
             //Repository

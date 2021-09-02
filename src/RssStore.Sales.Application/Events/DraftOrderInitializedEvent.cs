@@ -3,6 +3,7 @@ using System;
 
 namespace RssStore.Sales.Application.Events
 {
+    //Eventos sempre devem conter o id da agregação
     public class DraftOrderInitializedEvent : Event
     {
         public DraftOrderInitializedEvent(Guid clientId, Guid orderId)
