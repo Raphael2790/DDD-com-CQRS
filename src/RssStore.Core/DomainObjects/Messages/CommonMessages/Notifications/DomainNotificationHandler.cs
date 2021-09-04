@@ -8,7 +8,7 @@ namespace RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications
 {
     public class DomainNotificationHandler : INotificationHandler<DomainNotification>
     {
-        private List<DomainNotification> _notifications;
+        private List<DomainNotification> _notifications = new List<DomainNotification>();
         public Task Handle(DomainNotification notification, CancellationToken cancellationToken)
         {
             _notifications.Add(notification);

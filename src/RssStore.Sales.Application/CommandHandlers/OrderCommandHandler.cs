@@ -22,7 +22,10 @@ namespace RssStore.Sales.Application.CommandHandlers
         IRequestHandler<ApplyVoucherOrderCommand, bool>,
         IRequestHandler<RemoveOrderItemCommand, bool>,
         IRequestHandler<UpdateOrderItemCommand, bool>,
-        IRequestHandler<IniciateOrderCommand, bool>
+        IRequestHandler<IniciateOrderCommand, bool>,
+        IRequestHandler<FinishOrderCommand, bool>,
+        IRequestHandler<CancelOrderProcessReturnStockCommand, bool>,
+        IRequestHandler<CancelOrderProcessCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMediatorHandler _mediatorHandler;
@@ -186,6 +189,57 @@ namespace RssStore.Sales.Application.CommandHandlers
             );
 
             _orderRepository.UpdateOrder(order);
+            return await _orderRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(CancelOrderProcessReturnStockCommand message, CancellationToken cancellationToken)
+        {
+            var order = await _orderRepository.GetOrderById(message.OrderId);
+
+            if (order is null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification("pedido", "Pedido não encontrado"));
+                return false;
+            }
+
+            var itemList = new List<Item>();
+            order.OrderItems.ForEach(i => itemList.Add(new Item { Id = i.Id, Amount = i.Amount }));
+            var productOrderList = new ProductsOrderList { OrderId = order.Id, Items = itemList };
+
+            order.AddEvent(new OrderProcessCancelledEvent(order.Id, order.ClientId, productOrderList));
+
+            order.MakeItDraft();
+
+            return await _orderRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(FinishOrderCommand message, CancellationToken cancellationToken)
+        {
+            var order = await _orderRepository.GetOrderById(message.OrderId);
+
+            if(order is null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification("pedido", "Pedido não encontrado"));
+                return false;
+            }
+
+            order.FinishOrder();
+
+            order.AddEvent(new FinishedOrderEvent(message.OrderId));
+            return await _orderRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(CancelOrderProcessCommand message, CancellationToken cancellationToken)
+        {
+            var order = await _orderRepository.GetOrderById(message.OrderId);
+
+            if (order is null)
+            {
+                await _mediatorHandler.PublishNotification(new DomainNotification("pedido", "Pedido não encontrado"));
+                return false;
+            }
+
+            order.MakeItDraft();
             return await _orderRepository.UnitOfWork.Commit();
         }
 

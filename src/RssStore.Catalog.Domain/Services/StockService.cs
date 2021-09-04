@@ -73,6 +73,16 @@ namespace RssStore.Catalog.Domain.Services
             return await _productRepository.UnitOfWork.Commit();
         }
 
+        public async Task<bool> FillOrderProductList(ProductsOrderList list)
+        {
+            foreach(var item in list.Items)
+            {
+                if(!await FillProductStock(item.Id, item.Amount)) return false;
+            }
+
+            return await _productRepository.UnitOfWork.Commit();
+        }
+
         public void Dispose()
         {
             _productRepository.Dispose();

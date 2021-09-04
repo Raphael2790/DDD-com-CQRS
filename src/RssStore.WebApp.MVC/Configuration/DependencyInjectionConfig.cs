@@ -12,6 +12,7 @@ using RssStore.Catalog.Domain.Events;
 using RssStore.Catalog.Domain.Interfaces;
 using RssStore.Catalog.Domain.Services;
 using RssStore.Core.Communication.Mediator;
+using RssStore.Core.DomainObjects.Messages.CommonMessages.IntegrationEvents;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
 using RssStore.Payment.AntiCorruption;
 using RssStore.Payment.AntiCorruption.Interfaces;
@@ -72,7 +73,8 @@ namespace RssStore.WebApp.MVC.Configuration
 
             //MediatR Handler para evento de estoque
             services.AddScoped<INotificationHandler<LowProductStockEvent>, ProductStockEventHandler>();
-
+            services.AddScoped<INotificationHandler<IniciatedOrderEvent>, ProductStockEventHandler>();
+            services.AddScoped<INotificationHandler<OrderProcessCancelledEvent>, ProductStockEventHandler>();
 
             //Sales
             //MediatR irá resolver o comando usando o handler
@@ -80,6 +82,10 @@ namespace RssStore.WebApp.MVC.Configuration
             services.AddScoped<IRequestHandler<ApplyVoucherOrderCommand, bool>, OrderCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveOrderItemCommand, bool>, OrderCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateOrderItemCommand, bool>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<IniciateOrderCommand, bool>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<FinishOrderCommand, bool>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<CancelOrderProcessReturnStockCommand, bool>, OrderCommandHandler>();
+            services.AddScoped<IRequestHandler<CancelOrderProcessCommand, bool>, OrderCommandHandler>();
 
             //Context
             services.AddScoped<SalesContext>();
@@ -87,9 +93,12 @@ namespace RssStore.WebApp.MVC.Configuration
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderQueries, OrderQueries>();
             //EventsHandler
-            services.AddScoped<INotificationHandler<DraftOrderInitializedEvent>, OrderItemEventHandler>();
-            services.AddScoped<INotificationHandler<OrderItemAddedEvent>, OrderItemEventHandler>();
-            services.AddScoped<INotificationHandler<UpdatedOrderEvent>, OrderItemEventHandler>();
+            services.AddScoped<INotificationHandler<DraftOrderInitializedEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<OrderItemAddedEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<UpdatedOrderEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<RejectedOrderStockEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<AuthorizedPaymentEvent>, OrderEventHandler>();
+            services.AddScoped<INotificationHandler<UnauthorizedPaymentEvent>, OrderEventHandler>();
 
             //Payment
             //Context

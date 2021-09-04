@@ -10,7 +10,8 @@ namespace RssStore.Catalog.Domain.EventHandlers
 {
     public class ProductStockEventHandler : 
         INotificationHandler<LowProductStockEvent>,
-        INotificationHandler<IniciatedOrderEvent>
+        INotificationHandler<IniciatedOrderEvent>,
+        INotificationHandler<OrderProcessCancelledEvent>
     {
         private readonly IProductRepository _productRepository;
         private readonly IStockService _stockService;
@@ -42,6 +43,11 @@ namespace RssStore.Catalog.Domain.EventHandlers
                 //quem trata esse evento é o contexto de vendas
                 await _mediatorHandler.PublishEvent(new RejectedOrderStockEvent(message.OrderId, message.ClientId));
             }
+        }
+
+        public async Task Handle(OrderProcessCancelledEvent message, CancellationToken cancellationToken)
+        {
+            await _stockService.FillOrderProductList(message.ProductOrderList);
         }
     }
 }
