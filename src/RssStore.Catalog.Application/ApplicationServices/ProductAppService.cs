@@ -48,7 +48,7 @@ namespace RssStore.Catalog.Application.ApplicationServices
 
         public async Task<ProductDto> DebitStockAmount(Guid id, int amount)
         {
-            if (!(await _stockService.DebitProductStock(id, amount)))
+            if (!(await _stockService.DebitStockItem(id, amount)))
                 throw new DomainException("Falha ao debitar do estoque");
 
             return _mapper.Map<ProductDto>(await _productRepository.GetById(id));

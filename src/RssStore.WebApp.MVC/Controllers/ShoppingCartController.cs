@@ -8,6 +8,7 @@ using RssStore.Core.Communication.Mediator;
 using MediatR;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
 using RssStore.Sales.Application.Queries.Interfaces;
+using RssStore.Sales.Application.Queries.ViewModels;
 
 namespace RssStore.WebApp.MVC.Controllers
 {
@@ -105,6 +106,30 @@ namespace RssStore.WebApp.MVC.Controllers
             }
 
             return View(nameof(Index), await _orderQueries.GetClientCart(ClientId));
+        }
+
+        [HttpGet("resumo-da-compra")]
+        public async Task<IActionResult> PurchaseResume()
+        {
+            return View(await _orderQueries.GetClientCart(ClientId));
+        }
+
+        [HttpPost("iniciar-pedido")]
+        public async Task<IActionResult> IniciateOrder(CartViewModel cartViewModel)
+        {
+            var cart = await _orderQueries.GetClientCart(ClientId);
+
+            var command = new IniciateOrderCommand(cart.OrderId, ClientId, cart.TotalValue, cartViewModel.Payment.CardName, cartViewModel.Payment.CardNumber,
+                cartViewModel.Payment.ExpirationCardDate, cartViewModel.Payment.CvvCardCode);
+
+            await _mediatorHandler.SendCommand(command);
+
+            if (ValidOperation())
+            {
+                return RedirectToAction("Index", "Order");
+            }
+
+            return View("PurchaseResume", await _orderQueries.GetClientCart(ClientId));
         }
     }
 }

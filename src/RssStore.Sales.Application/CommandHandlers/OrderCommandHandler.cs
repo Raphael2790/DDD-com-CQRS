@@ -1,11 +1,15 @@
 ﻿using MediatR;
 using RssStore.Core.Communication.Mediator;
+using RssStore.Core.DomainObjects.DTOs;
 using RssStore.Core.DomainObjects.Messages;
+using RssStore.Core.DomainObjects.Messages.CommonMessages.IntegrationEvents;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
+using RssStore.Core.Extensions;
 using RssStore.Sales.Application.Commands;
 using RssStore.Sales.Application.Events;
 using RssStore.Sales.Domain.Entities;
 using RssStore.Sales.Domain.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,15 +17,16 @@ using System.Threading.Tasks;
 namespace RssStore.Sales.Application.CommandHandlers
 {
     //Todos comandos lançados referentes a uma entidade podem ser agrupados ou separados 
-    public class OrderItemCommandHandler : 
+    public class OrderCommandHandler : 
         IRequestHandler<AddOrderItemCommand, bool>,
         IRequestHandler<ApplyVoucherOrderCommand, bool>,
         IRequestHandler<RemoveOrderItemCommand, bool>,
-        IRequestHandler<UpdateOrderItemCommand, bool>
+        IRequestHandler<UpdateOrderItemCommand, bool>,
+        IRequestHandler<IniciateOrderCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMediatorHandler _mediatorHandler;
-        public OrderItemCommandHandler(IOrderRepository orderRepository, IMediatorHandler mediatorHandler)
+        public OrderCommandHandler(IOrderRepository orderRepository, IMediatorHandler mediatorHandler)
         {
             _orderRepository = orderRepository;
             _mediatorHandler = mediatorHandler;
@@ -159,6 +164,26 @@ namespace RssStore.Sales.Application.CommandHandlers
 
             order.AddEvent(new VoucherApplyedOrderEvent(message.ClientId, order.Id, voucher.Id));
             order.AddEvent(new UpdatedOrderEvent(order.ClientId, order.Id, order.TotalValue));
+
+            _orderRepository.UpdateOrder(order);
+            return await _orderRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(IniciateOrderCommand message, CancellationToken cancellationToken)
+        {
+            if (!ValidateCommand(message)) return false;
+
+            var order = await _orderRepository.GetDraftOrderByClientId(message.ClientId);
+            order.IniatializeOrder();
+
+            var itensList = new List<Item>();
+            order.OrderItems.ForEach(i => itensList.Add(new Item { Id = i.ProductId, Amount = i.Amount }));
+            var orderProductList = new ProductsOrderList { OrderId = order.Id, Items = itensList };
+
+            order.AddEvent
+            (
+              new IniciatedOrderEvent(order.Id, message.ClientId, order.TotalValue, orderProductList, message.CardName, message.CardNumber, message.CardExpirationDate, message.CardCvv)
+            );
 
             _orderRepository.UpdateOrder(order);
             return await _orderRepository.UnitOfWork.Commit();

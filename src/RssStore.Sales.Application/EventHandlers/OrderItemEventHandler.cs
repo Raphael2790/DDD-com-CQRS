@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using RssStore.Core.DomainObjects.Messages.CommonMessages.IntegrationEvents;
 using RssStore.Sales.Application.Events;
 using System;
 using System.Threading;
@@ -10,7 +11,8 @@ namespace RssStore.Sales.Application.EventHandlers
     public class OrderItemEventHandler : 
         INotificationHandler<DraftOrderInitializedEvent>,
         INotificationHandler<OrderItemAddedEvent>,
-        INotificationHandler<UpdatedOrderEvent>
+        INotificationHandler<UpdatedOrderEvent>,
+        INotificationHandler<RejectedOrderStockEvent>
     {
         public Task Handle(DraftOrderInitializedEvent notification, CancellationToken cancellationToken)
         {
@@ -24,6 +26,12 @@ namespace RssStore.Sales.Application.EventHandlers
 
         public Task Handle(UpdatedOrderEvent notification, CancellationToken cancellationToken)
         {
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(RejectedOrderStockEvent notification, CancellationToken cancellationToken)
+        {
+            //logica que processaria o erro de estoque
             return Task.CompletedTask;
         }
     }
