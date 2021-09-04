@@ -20,6 +20,8 @@
     <ProjectReference Include="..\RssStore.Catalog.Data\RssStore.Catalog.Data.csproj" />
     <ProjectReference Include="..\RssStore.Catalog.Domain\RssStore.Catalog.Domain.csproj" />
     <ProjectReference Include="..\RssStore.Core\RssStore.Core.csproj" />
+    <ProjectReference Include="..\RssStore.Payment.AntiCorruption\RssStore.Payment.AntiCorruption.csproj" />
+    <ProjectReference Include="..\RssStore.Payment.Data\RssStore.Payment.Data.csproj" />
     <ProjectReference Include="..\RssStore.Sales.Application\RssStore.Sales.Application.csproj" />
     <ProjectReference Include="..\RssStore.Sales.Data\RssStore.Sales.Data.csproj" />
   </ItemGroup>

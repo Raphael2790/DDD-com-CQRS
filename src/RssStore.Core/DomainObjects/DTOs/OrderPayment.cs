@@ -7,9 +7,9 @@ namespace RssStore.Core.DomainObjects.DTOs
         public Guid OrderId { get; set; }
         public Guid ClientId { get; set; }
         public decimal Total { get; set; }
-        public string CardName { get; private set; }
-        public string CardNumber { get; private set; }
-        public string CardExpirationDate { get; private set; }
-        public string CardCvv { get; private set; }
+        public string CardName { get; set; }
+        public string CardNumber { get; set; }
+        public string CardExpirationDate { get; set; }
+        public string CardCvv { get; set; }
     }
 }

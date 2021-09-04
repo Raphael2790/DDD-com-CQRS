@@ -1,4 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RssStore.Catalog.Application.ApplicationServices;
 using RssStore.Catalog.Application.Interfaces;
@@ -10,6 +13,12 @@ using RssStore.Catalog.Domain.Interfaces;
 using RssStore.Catalog.Domain.Services;
 using RssStore.Core.Communication.Mediator;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
+using RssStore.Payment.AntiCorruption;
+using RssStore.Payment.AntiCorruption.Interfaces;
+using RssStore.Payment.Business.Interfaces;
+using RssStore.Payment.Business.Services;
+using RssStore.Payment.Data.Context;
+using RssStore.Payment.Data.Repositories;
 using RssStore.Sales.Application.CommandHandlers;
 using RssStore.Sales.Application.Commands;
 using RssStore.Sales.Application.EventHandlers;
@@ -19,13 +28,33 @@ using RssStore.Sales.Application.Queries.Interfaces;
 using RssStore.Sales.Data;
 using RssStore.Sales.Data.Repository;
 using RssStore.Sales.Domain.Interfaces;
+using RssStore.WebApp.MVC.Data;
 
 namespace RssStore.WebApp.MVC.Configuration
 {
     public static class DependencyInjectionConfig
     {
-        public static void ResolveDependencies(this IServiceCollection services)
+        public static void ResolveDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer(
+                   configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<CatalogDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<SalesContext>(options =>
+               options.UseSqlServer(
+                   configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<PaymentContext>(options =>
+               options.UseSqlServer(
+                   configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             //Event Bus
             services.AddScoped<IMediatorHandler, MediatorHandler>();
 
@@ -61,8 +90,18 @@ namespace RssStore.WebApp.MVC.Configuration
             services.AddScoped<INotificationHandler<DraftOrderInitializedEvent>, OrderItemEventHandler>();
             services.AddScoped<INotificationHandler<OrderItemAddedEvent>, OrderItemEventHandler>();
             services.AddScoped<INotificationHandler<UpdatedOrderEvent>, OrderItemEventHandler>();
+
+            //Payment
+            //Context
+            services.AddScoped<PaymentContext>();
+            //Repository
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            //Services
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<ICreditCardPaymentFacade, CreditCardPaymentFacade>();
+            //ExternalServices
+            services.AddScoped<IPayPalGateway, PayPalGateway>();
+            services.AddScoped<IConfigurationManager, ConfigurationManager>();
         }
-
-
     }
 }

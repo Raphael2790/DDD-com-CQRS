@@ -6,6 +6,7 @@ namespace RssStore.Core.DomainObjects.Messages.CommonMessages.IntegrationEvents
     {
         public UnauthorizedPaymentEvent(Guid orderId, Guid clientId, Guid paymentId, Guid transactionId, decimal value)
         {
+            AggregateId = orderId;
             OrderId = orderId;
             ClientId = clientId;
             PaymentId = paymentId;
