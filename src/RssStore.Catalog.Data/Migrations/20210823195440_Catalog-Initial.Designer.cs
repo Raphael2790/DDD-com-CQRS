@@ -9,7 +9,7 @@ using RssStore.Catalog.Data;
 
 namespace RssStore.Catalog.Data.Migrations
 {
-    [DbContext(typeof(CatalogDbContext))]
+    [DbContext(typeof(CatalogContext))]
     [Migration("20210823195440_Catalog-Initial")]
     partial class CatalogInitial
     {

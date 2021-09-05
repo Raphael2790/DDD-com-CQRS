@@ -17,10 +17,11 @@ namespace RssStore.Catalog.Domain.EventHandlers
         private readonly IStockService _stockService;
         private readonly IMediatorHandler _mediatorHandler;
 
-        public ProductStockEventHandler(IProductRepository productRepository, IStockService stockService)
+        public ProductStockEventHandler(IProductRepository productRepository, IStockService stockService, IMediatorHandler mediatorHandler)
         {
             _productRepository = productRepository;
             _stockService = stockService;
+            _mediatorHandler = mediatorHandler;
         }
         public async Task Handle(LowProductStockEvent message, CancellationToken cancellationToken)
         {

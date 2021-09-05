@@ -1,0 +1,33 @@
+﻿@model IEnumerable<RssStore.Core.Data.EventSourcing.StoredEvent>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @{
+        <table class="table table-sm table-bordered table-hover col-md-12">
+            <thead class="table-dark">
+                <tr>
+                    <td>Id</td>
+                    <td>Nome</td>
+                    <td>Data</td>
+                    <td>JSON</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var evento in Model)
+                {
+                    <tr>
+                        <td>@evento.Id</td>
+                        <td>@evento.Type</td>
+                        <td>@evento.OcurrencyDate</td>
+                        <td><code>@evento.Data</code></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    }
+</div>

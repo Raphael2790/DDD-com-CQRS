@@ -45,11 +45,13 @@ namespace RssStore.Sales.Data
             }
 
             //Pegando todos os eventos de mudanças dentro das entidades pelo change tracker
-            await _mediatorHandler.PublishEvents(this);
 
-            var sucess = await base.SaveChangesAsync() > 0;
+            var success = await base.SaveChangesAsync() > 0;
 
-            return sucess;
+            if(success)
+                await _mediatorHandler.PublishEvents(this);
+
+            return success;
         }
     }
 }

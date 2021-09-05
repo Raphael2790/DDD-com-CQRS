@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using EventSourcing.Interfaces;
+using EventSourcing.Repositories;
+using EventSourcing.Services;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +15,7 @@ using RssStore.Catalog.Domain.Events;
 using RssStore.Catalog.Domain.Interfaces;
 using RssStore.Catalog.Domain.Services;
 using RssStore.Core.Communication.Mediator;
+using RssStore.Core.Data.EventSourcing.Interfaces;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.IntegrationEvents;
 using RssStore.Core.DomainObjects.Messages.CommonMessages.Notifications;
 using RssStore.Payment.AntiCorruption;
@@ -41,7 +45,7 @@ namespace RssStore.WebApp.MVC.Configuration
                options.UseSqlServer(
                    configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<CatalogDbContext>(options =>
+            services.AddDbContext<CatalogContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
 
@@ -56,6 +60,11 @@ namespace RssStore.WebApp.MVC.Configuration
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
+            //EventStore
+            services.AddSingleton<IEventStoreService, EventStoreService>();
+            services.AddSingleton<IEventSourcingRepository, EventSourcingRepository>();
+
             //Event Bus
             services.AddScoped<IMediatorHandler, MediatorHandler>();
 
@@ -69,7 +78,7 @@ namespace RssStore.WebApp.MVC.Configuration
             //Domain
             services.AddScoped<IStockService, StockService>();
             //Context
-            services.AddScoped<CatalogDbContext>();
+            services.AddScoped<CatalogContext>();
 
             //MediatR Handler para evento de estoque
             services.AddScoped<INotificationHandler<LowProductStockEvent>, ProductStockEventHandler>();

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RssStore.Catalog.Data.Extensions;
 using RssStore.Catalog.Domain.Entities;
+using RssStore.Core.Communication.Mediator;
 using RssStore.Core.Data;
 using RssStore.Core.DomainObjects.Messages;
 using System;
@@ -8,9 +10,13 @@ using System.Threading.Tasks;
 
 namespace RssStore.Catalog.Data
 {
-    public class CatalogDbContext : DbContext, IUnitOfWork
+    public class CatalogContext : DbContext, IUnitOfWork
     {
-        public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options){}
+        private readonly IMediatorHandler _mediatorHandler;
+        public CatalogContext(DbContextOptions<CatalogContext> options, IMediatorHandler mediatorHandler) : base(options)
+        {
+            _mediatorHandler = mediatorHandler;
+        }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -22,7 +28,7 @@ namespace RssStore.Catalog.Data
 
             modelBuilder.Ignore<Event>();
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogContext).Assembly);
         }
 
         public async Task<bool> Commit()
@@ -36,7 +42,11 @@ namespace RssStore.Catalog.Data
                     entry.Property("RegisterDate").IsModified = false;
             }
 
-            return await base.SaveChangesAsync() > 0;
+            var success = await base.SaveChangesAsync() > 0;
+            if (success)
+                await _mediatorHandler.PublishEvents(this);
+
+            return success;
         }
     }
 }

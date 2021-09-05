@@ -37,10 +37,10 @@ namespace RssStore.Payment.Data.Context
                 }
             }
 
-            var sucesso = await base.SaveChangesAsync() > 0;
-            if (sucesso) await _mediatorHandler.PublishEvents(this);
+            var success = await base.SaveChangesAsync() > 0;
+            if (success) await _mediatorHandler.PublishEvents(this);
 
-            return sucesso;
+            return success;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

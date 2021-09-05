@@ -8,7 +8,7 @@ using RssStore.Catalog.Data;
 
 namespace RssStore.Catalog.Data.Migrations
 {
-    [DbContext(typeof(CatalogDbContext))]
+    [DbContext(typeof(CatalogContext))]
     partial class CatalogDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

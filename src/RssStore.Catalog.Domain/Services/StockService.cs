@@ -52,7 +52,7 @@ namespace RssStore.Catalog.Domain.Services
 
             if(product.StockAmount < 10)
             {
-                await _mediatorHandler.PublishEvent(new LowProductStockEvent(product.Id, product.StockAmount));
+                await _mediatorHandler.PublishDomainEvent(new LowProductStockEvent(product.Id, product.StockAmount));
             }
 
             _productRepository.UpdateProduct(product);

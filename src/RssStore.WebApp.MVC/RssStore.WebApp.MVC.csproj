@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EventSourcing\EventSourcing.csproj" />
     <ProjectReference Include="..\RssStore.Catalog.Application\RssStore.Catalog.Application.csproj" />
     <ProjectReference Include="..\RssStore.Catalog.Data\RssStore.Catalog.Data.csproj" />
     <ProjectReference Include="..\RssStore.Catalog.Domain\RssStore.Catalog.Domain.csproj" />

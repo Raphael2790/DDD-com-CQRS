@@ -11,9 +11,9 @@ namespace RssStore.Catalog.Data.Repository
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly CatalogDbContext _context;
+        private readonly CatalogContext _context;
 
-        public ProductRepository(CatalogDbContext context)
+        public ProductRepository(CatalogContext context)
         {
             _context = context;
         }

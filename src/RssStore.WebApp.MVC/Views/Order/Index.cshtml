@@ -1,0 +1,76 @@
+﻿@model IEnumerable<RssStore.Sales.Application.Queries.ViewModels.OrderViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <h4>Meus Pedidos</h4>
+            <hr>
+            <h5>Confira o status do seu pedido</h5>
+
+            @{
+                if (Model.Any())
+                {
+                    <br><br>
+                    <div class="table-responsive-sm">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Pedido</th>
+                                    <th scope="col">Data Pedido</th>
+                                    <th scope="col">Status Pedido</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col">Historia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>@order.Code</td>
+                                            <td>@order.RegisterDate.ToShortDateString()</td>
+                                            <td>
+                                                <h4>
+
+                                                    @{
+                                                        if (order.OrderStatus == 2)
+                                                        {
+                                                            <span class="badge badge-success">
+                                                                Pago
+                                                            </span>
+                                                        }
+                                                        else if (order.OrderStatus == 3)
+                                                        {
+                                                            <span class="badge badge-danger">
+                                                                Cancelado
+                                                            </span>
+                                                        }
+                                                    }
+
+                                                </h4>
+                                            </td>
+                                            <td>@order.TotalValue.ToString("C")</td>
+                                            <td><a class="btn btn-info" asp-controller="Events" asp-action="Index" asp-route-id="@order.Id"><span class="far fa-clock"></span></a></td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p>Nenhum pedido</p>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
