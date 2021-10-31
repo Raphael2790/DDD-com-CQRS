@@ -180,7 +180,7 @@ namespace RssStore.Sales.Application.CommandHandlers
             order.IniatializeOrder();
 
             var itensList = new List<Item>();
-            order.OrderItems.ForEach(i => itensList.Add(new Item { Id = i.ProductId, Amount = i.Amount }));
+            order.OrderItems.ForEach(i => itensList.Add(new Item { Id = i.ProductId, Amount = i.Quantity }));
             var orderProductList = new ProductsOrderList { OrderId = order.Id, Items = itensList };
 
             order.AddEvent
@@ -203,7 +203,7 @@ namespace RssStore.Sales.Application.CommandHandlers
             }
 
             var itemList = new List<Item>();
-            order.OrderItems.ForEach(i => itemList.Add(new Item { Id = i.Id, Amount = i.Amount }));
+            order.OrderItems.ForEach(i => itemList.Add(new Item { Id = i.Id, Amount = i.Quantity }));
             var productOrderList = new ProductsOrderList { OrderId = order.Id, Items = itemList };
 
             order.AddEvent(new OrderProcessCancelledEvent(order.Id, order.ClientId, productOrderList));

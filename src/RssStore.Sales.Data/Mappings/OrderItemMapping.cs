@@ -19,7 +19,7 @@ namespace RssStore.Sales.Data.Mappings
             builder.Property(o => o.UnitValue)
                 .HasColumnType("decimal(10,2)");
 
-            builder.Property(o => o.Amount)
+            builder.Property(o => o.Quantity)
                 .HasColumnType("decimal(10,2)");
 
             builder.HasOne(o => o.Order)

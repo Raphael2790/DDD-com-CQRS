@@ -2,6 +2,7 @@
 using RssStore.Core.BaseEntity.DomainObjects;
 using RssStore.Core.DomainObjects;
 using RssStore.Core.Interfaces.DomainObjects;
+using RssStore.Sales.Domain.EntityValidations;
 using RssStore.Sales.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,10 @@ namespace RssStore.Sales.Domain.Entities
 {
     public class Order : Entity, IAggregateRoot
     {
-        public int Code { get; private set; }
+        public static int MAX_UNIT_ITEM = 15;
+        public static int MIN_UNIDADES_ITEM = 1;
+
+        public string Code { get; private set; }
         public Guid ClientId { get; private set; }
         public Guid? VoucherId { get; private set; }
         public bool VoucherApplyed { get; private set; }
@@ -38,6 +42,7 @@ namespace RssStore.Sales.Domain.Entities
             Discount = discount;
             TotalValue = totalValue;
             _orderItems = new List<OrderItem>();
+            RegisterDate = DateTime.Now;
         }
 
         public ValidationResult ApplyVoucher(Voucher voucher)
@@ -92,14 +97,14 @@ namespace RssStore.Sales.Domain.Entities
 
         public void AddItem(OrderItem orderItem)
         {
-            if (!orderItem.IsValid()) return;
-
             orderItem.AssociateOrder(Id);
+            if (!orderItem.IsValid()) return;
+            ValidateQuantityExistingItens(orderItem);
 
             if (OrderItemExists(orderItem))
             {
                 var existsItem = _orderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
-                existsItem.AddAmount(orderItem.Amount);
+                existsItem.AddAmount(orderItem.Quantity);
                 orderItem = existsItem;
 
                 _orderItems.Remove(existsItem);
@@ -109,6 +114,19 @@ namespace RssStore.Sales.Domain.Entities
             _orderItems.Add(orderItem);
 
             CalculateTotalOrder();
+        }
+
+        private void ValidateQuantityExistingItens(OrderItem orderItem)
+        {
+            var itemQuantity = orderItem.Quantity;
+            if (OrderItemExists(orderItem))
+            {
+                var itemInOrder = _orderItems.FirstOrDefault(x => x.ProductId == orderItem.ProductId);
+                itemQuantity += itemInOrder.Quantity;
+            }
+
+            if (itemQuantity > MAX_UNIT_ITEM)
+                throw new DomainException($"Máximo de {MAX_UNIT_ITEM} unidades por produto");
         }
 
         public void RemoveItem(OrderItem orderItem)
@@ -173,7 +191,8 @@ namespace RssStore.Sales.Domain.Entities
             {
                 var order = new Order
                 {
-                    ClientId = clientId
+                    ClientId = clientId,
+                    VoucherApplyed = false
                 };
                 //uma vez concentrada a chamada do metodo unico ponto de mudança
                 order.MakeItDraft();
@@ -183,7 +202,7 @@ namespace RssStore.Sales.Domain.Entities
 
         public override bool IsValid()
         {
-            return true;
+            return new OrderValidation().Validate(this).IsValid;
         }
     }
 }

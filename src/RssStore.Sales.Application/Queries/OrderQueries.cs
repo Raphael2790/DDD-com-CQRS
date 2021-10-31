@@ -40,7 +40,7 @@ namespace RssStore.Sales.Application.Queries
                 cart.CartItems.Add(new CartItemViewModel
                 {
                     ProductId = item.ProductId,
-                    Amount = item.Amount,
+                    Amount = item.Quantity,
                     ProductName = item.ProductName,
                     TotalValue = item.CalculateValue(),
                     UnitValue = item.UnitValue

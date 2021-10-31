@@ -1,4 +1,5 @@
 ﻿using RssStore.Core.BaseEntity.DomainObjects;
+using RssStore.Sales.Domain.EntityValidations;
 using System;
 
 namespace RssStore.Sales.Domain.Entities
@@ -8,7 +9,7 @@ namespace RssStore.Sales.Domain.Entities
         public Guid OrderId { get; private set; }
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; }
-        public int Amount { get; private set; }
+        public int Quantity { get; private set; }
         public decimal UnitValue { get; private set; }
 
         //EF Relation
@@ -21,7 +22,7 @@ namespace RssStore.Sales.Domain.Entities
         {
             ProductId = productId;
             ProductName = productName;
-            Amount = amount;
+            Quantity = amount;
             UnitValue = unitValue;
         }
 
@@ -32,17 +33,22 @@ namespace RssStore.Sales.Domain.Entities
 
         public decimal CalculateValue()
         {
-            return Amount * UnitValue;
+            return Quantity * UnitValue;
         }
 
         internal void AddAmount(int amount)
         {
-            Amount += amount;
+            Quantity += amount;
         }
 
         internal void UpdateAmount(int amount)
         {
-            Amount = amount;
+            Quantity = amount;
+        }
+
+        public override bool IsValid()
+        {
+            return new OrderItemValidation().Validate(this).IsValid;
         }
     }
 }
