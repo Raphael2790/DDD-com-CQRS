@@ -9,6 +9,21 @@ namespace RssStore.Sales.Domain.Entities
 {
     public class Voucher : Entity 
     {
+        public Voucher(string code, decimal? percentual, decimal? discountValue, int amount, VoucherDiscountType voucherDiscountType, DateTime expirationDate, bool active, bool applyed)
+        {
+            Code = code;
+            Percentual = percentual;
+            DiscountValue = discountValue;
+            Amount = amount;
+            VoucherDiscountType = voucherDiscountType;
+            CreatedAt = DateTime.Now;
+            ExpirationDate = expirationDate;
+            Active = active;
+            Applyed = applyed;
+        }
+
+        protected Voucher() { }
+
         public string Code { get; private set; }
         public decimal? Percentual { get; private set; }
         public decimal? DiscountValue { get; private set; }

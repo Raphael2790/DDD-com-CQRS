@@ -18,8 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\EventSourcing\EventSourcing.csproj" />
     <ProjectReference Include="..\RssStore.Catalog.Application\RssStore.Catalog.Application.csproj" />
-    <ProjectReference Include="..\RssStore.Catalog.Data\RssStore.Catalog.Data.csproj" />
-    <ProjectReference Include="..\RssStore.Catalog.Domain\RssStore.Catalog.Domain.csproj" />
     <ProjectReference Include="..\RssStore.Core\RssStore.Core.csproj" />
     <ProjectReference Include="..\RssStore.Payment.AntiCorruption\RssStore.Payment.AntiCorruption.csproj" />
     <ProjectReference Include="..\RssStore.Payment.Data\RssStore.Payment.Data.csproj" />

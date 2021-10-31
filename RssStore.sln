@@ -39,21 +39,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Sales.Application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Sales.Data", "src\RssStore.Sales.Data\RssStore.Sales.Data.csproj", "{AB3CFD0A-50C8-4A6E-8CA3-6BF40E4F7B82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Payment.Data", "src\RssStore.Payment.Data\RssStore.Payment.Data.csproj", "{9E5795A4-E6D0-49A8-B445-B3B21D054F7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Payment.Data", "src\RssStore.Payment.Data\RssStore.Payment.Data.csproj", "{9E5795A4-E6D0-49A8-B445-B3B21D054F7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Payment.Business", "src\RssStore.Payment.Business\RssStore.Payment.Business.csproj", "{8B470920-2226-44C7-9021-B900EACB7949}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Payment.Business", "src\RssStore.Payment.Business\RssStore.Payment.Business.csproj", "{8B470920-2226-44C7-9021-B900EACB7949}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Payment.AntiCorruption", "src\RssStore.Payment.AntiCorruption\RssStore.Payment.AntiCorruption.csproj", "{F59468C1-FC1E-4548-A8C9-0DAB93DCB5F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Payment.AntiCorruption", "src\RssStore.Payment.AntiCorruption\RssStore.Payment.AntiCorruption.csproj", "{F59468C1-FC1E-4548-A8C9-0DAB93DCB5F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{9EBF71A5-1DB7-4186-BD60-E31BD69166DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing", "src\EventSourcing\EventSourcing.csproj", "{1D6206F4-33D4-4867-8841-6A676B8269A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing", "src\EventSourcing\EventSourcing.csproj", "{1D6206F4-33D4-4867-8841-6A676B8269A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Register.Domain", "src\RssStore.Register.Domain\RssStore.Register.Domain.csproj", "{18524BDF-A409-4E95-95F1-2E81FFA1038A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Register.Domain", "src\RssStore.Register.Domain\RssStore.Register.Domain.csproj", "{18524BDF-A409-4E95-95F1-2E81FFA1038A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Register.Data", "src\RssStore.Register.Data\RssStore.Register.Data.csproj", "{2244BE70-2FE6-4E5D-A90C-F50BB541EFA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Register.Data", "src\RssStore.Register.Data\RssStore.Register.Data.csproj", "{2244BE70-2FE6-4E5D-A90C-F50BB541EFA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Register.Application", "src\RssStore.Register.Application\RssStore.Register.Application.csproj", "{A42E0E5C-85EF-425C-8E66-C1BD1038E06E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssStore.Register.Application", "src\RssStore.Register.Application\RssStore.Register.Application.csproj", "{A42E0E5C-85EF-425C-8E66-C1BD1038E06E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{249C3DA5-76FD-4A23-82D1-44B4125E7839}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStore.Sales.Domain.Tests", "tests\RssStore.Sales.Domain.Tests\RssStore.Sales.Domain.Tests.csproj", "{E7113A54-0E6B-4E9A-BFA2-4F84C098978C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +129,10 @@ Global
 		{A42E0E5C-85EF-425C-8E66-C1BD1038E06E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A42E0E5C-85EF-425C-8E66-C1BD1038E06E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A42E0E5C-85EF-425C-8E66-C1BD1038E06E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7113A54-0E6B-4E9A-BFA2-4F84C098978C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7113A54-0E6B-4E9A-BFA2-4F84C098978C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7113A54-0E6B-4E9A-BFA2-4F84C098978C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7113A54-0E6B-4E9A-BFA2-4F84C098978C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +161,8 @@ Global
 		{18524BDF-A409-4E95-95F1-2E81FFA1038A} = {37A09C18-6FBE-43AD-B8F9-AAC41328A90C}
 		{2244BE70-2FE6-4E5D-A90C-F50BB541EFA6} = {37A09C18-6FBE-43AD-B8F9-AAC41328A90C}
 		{A42E0E5C-85EF-425C-8E66-C1BD1038E06E} = {37A09C18-6FBE-43AD-B8F9-AAC41328A90C}
+		{249C3DA5-76FD-4A23-82D1-44B4125E7839} = {0ECDAFD9-F48C-43A2-B5C6-D345FE4007EF}
+		{E7113A54-0E6B-4E9A-BFA2-4F84C098978C} = {249C3DA5-76FD-4A23-82D1-44B4125E7839}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {72EFF05E-7215-4F5E-A0FB-25FB6A534DCD}
