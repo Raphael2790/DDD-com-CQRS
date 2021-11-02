@@ -131,6 +131,7 @@ namespace RssStore.Sales.Domain.Entities
 
         public void RemoveItem(OrderItem orderItem)
         {
+            orderItem.AssociateOrder(Id);
             if (!orderItem.IsValid()) return;
 
             var existItem = OrderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
@@ -144,9 +145,9 @@ namespace RssStore.Sales.Domain.Entities
 
         public void UpdateItem(OrderItem orderItem)
         {
-            if (!orderItem.IsValid()) return;
-
             orderItem.AssociateOrder(Id);
+            if (!orderItem.IsValid()) return;
+            ValidateQuantityExistingItens(orderItem);
 
             var existsItem = OrderItems.FirstOrDefault(p => p.ProductId == orderItem.ProductId);
 
