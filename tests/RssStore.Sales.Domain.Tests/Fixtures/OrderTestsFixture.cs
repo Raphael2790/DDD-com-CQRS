@@ -6,8 +6,8 @@ using Xunit;
 
 namespace RssStore.Sales.Domain.Tests.Fixtures
 {
-    [CollectionDefinition(nameof(OrderTestsCollention))]
-    public class OrderTestsCollention : ICollectionFixture<OrderTestsFixture> { }
+    [CollectionDefinition(nameof(OrderTestsCollection))]
+    public class OrderTestsCollection : ICollectionFixture<OrderTestsFixture> { }
 
     public class OrderTestsFixture : IDisposable
     {

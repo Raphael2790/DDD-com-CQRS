@@ -8,7 +8,7 @@ using Xunit;
 
 namespace RssStore.Sales.Domain.Tests
 {
-    [Collection(nameof(OrderTestsCollention))]
+    [Collection(nameof(OrderTestsCollection))]
     public class OrderTests
     {
         private readonly OrderTestsFixture _orderFixture;
